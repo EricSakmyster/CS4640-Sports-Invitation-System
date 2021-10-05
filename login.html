@@ -12,9 +12,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta name="author" content="Merron Tecleab">
+        <meta name="author" content="Eric Sakmyster and Merron Tecleab">
         <meta name="description" content="Login page">
-        <meta name="keywords" content="Merron login">
+        <meta name="keywords" content="Merron Eric login">
     </head>
 
     <style>
@@ -33,8 +33,8 @@
         }
 
         @media screen and (max-width: 600px) {
-        .col-25, .col-75, input[type=submit] {
-            width: 100%;
+        .col-25, .col-75, .col-2, input[type=submit] { 
+            width: 100%; /*If the width of the screen is 600 px or less, make text and the text box on separate rows of the website*/
             margin-top: 0;
   }
 }
@@ -45,24 +45,24 @@
             <h1>Welcome to the Sports Recruitment website</h1>
             <h3 style="margin-top: 200px;">Login</h3>
 
-            <div class="row justify-content-center">
-                <div class="col-2">
+            <div class="row justify-content-center"> <!--Username field-->
+                <div class="col-2"> 
                     <label for="usr" class="col-sm-2" style="display: inline-block; text-align: left;">Username:</label>
                 </div>
                 <div class="col-2">
-                    <input type="text" class="form-control col-sm-10" style="display: inline-block; text-align: left;" id="usr">
+                    <input type="text" class="form-control col-sm-10" style="display: inline-block; text-align: left;" id="usr"> <!--input field-->
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center"> <!--Password field-->
                 <div class="col-2">
                     <label for="pwd">Password:</label>
                 </div>
                 <div class="col-2">
-                    <input type="password" class="form-control" id="pwd">
+                    <input type="password" class="form-control" id="pwd"> <!--input field-->
                 </div>
             </div>
-          <button type="button" class="btn btn-primary btn-sm">Login</button>
-          <a href="#" class="text-decoration-none">Forgot Password?</a>
+          <button type="button" class="btn btn-primary btn-sm">Login</button> <!--Login button-->
+          <a href="#" class="text-decoration-none">Forgot Password?</a> <!--"Forgot Password button"-->
         </div>
     </body>
 </html>
