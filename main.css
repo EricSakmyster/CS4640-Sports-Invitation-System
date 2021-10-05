@@ -1,0 +1,220 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h4 { font-size: 1.12em; }
+h5 { font-size: .83em; }
+h6 { font-size: .75em; }
+
+html,body{
+    height: 100%;
+}
+
+html body {
+    background: rgb(236, 236, 236);
+}
+#header-footer-container{
+    min-height: 100%;
+    position:relative;
+}
+
+#body{
+    padding-bottom: 40px;
+}
+
+.primary-footer{
+    height: 40px; 
+    width:100%;
+    position: absolute;
+    bottom: 0; 
+    padding-left: 3%;
+    padding-right: 3%;
+    text-align: center;
+}
+
+.card:hover {
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+}
+[class*="col-"] {
+    float: left;
+}
+[class*="col-"] {
+        width: 100%;
+}
+.title {
+    text-align: center;
+}
+.btn {
+    background-color: #00bfff;
+    border: none;
+    color: white;
+    padding: 13px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.nav-link {
+    border-bottom: 3px solid RGBA(0,0,0,0);
+}
+.nav-login {
+    padding-left: 5px;
+    padding-right: 5px;
+    float: right;
+}
+#login {
+    float:right;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.navbar {
+    margin-bottom: 10px;
+    width: 100%;
+    padding-right: 5px;
+}
+
+.navbar-brand {
+    border-right: 2px solid rgba(255, 255, 255, 0.774);
+    padding-right: 10px;
+}
+.nav-link:hover{
+    border-bottom: 3px solid rgb(47, 120, 255);
+}
+.nav-button:hover{
+    background-color: #002fff;
+}
+.description {
+    margin-bottom: 15px;
+}
+.footer-nav{
+    position:relative;
+}
+#card-event-form{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+@media only screen and (max-width: 768px){
+    .row {
+        width: 100%;
+        margin-right: px;
+
+    }
+    .col-12 {
+        width: 100%;
+        margin-bottom: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .col-8 {
+        width: 66.66%;
+        padding-left: 3%;
+        padding-right: 3%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 3px;
+    }
+    .col-6 {
+        width: 50%;
+        padding-left: 3%;
+        padding-right: 3%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 3px;
+    }
+    .col-4 {
+        width: 30%;
+        padding-left: 1%;
+        padding-right: 1%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 3px;
+        margin-right: 3.33%;
+    }
+}
+@media only screen and (min-width: 768px){
+    .row {
+        width: 100%;
+    }
+    .col-12 {
+        width: 100%;
+        margin-bottom: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .col-8 {
+        width: 66.66%;
+        padding-left: 3%;
+        padding-right: 3%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 3px;
+    }
+    .col-6 {
+        width: 50%;
+        padding-left: 3%;
+        padding-right: 3%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 3px;
+    }
+    .col-4 {
+        width: 30%;
+        padding-left: 1%;
+        padding-right: 1%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 3px;
+        margin-right: 3.33%;
+    }
+}
