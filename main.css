@@ -2,6 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+/* Authors: Eric Sakmyster and Merron Tecleab */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -69,6 +70,7 @@ html body {
     padding-bottom: 40px;
 }
 
+/* Allows for the footer to be fixed on the bottom and centered */
 .primary-footer{
     height: 40px; 
     width:100%;
@@ -79,6 +81,7 @@ html body {
     text-align: center;
 }
 
+/* Gives the cards a shadow when hovered over */
 .card:hover {
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
@@ -108,15 +111,11 @@ html body {
 .nav-link {
     border-bottom: 3px solid RGBA(0,0,0,0);
 }
+/* Want login on far right of toolbar */
 .nav-login {
     padding-left: 5px;
     padding-right: 5px;
     float: right;
-}
-#login {
-    float:right;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 .navbar {
     margin-bottom: 10px;
@@ -128,6 +127,7 @@ html body {
     border-right: 2px solid rgba(255, 255, 255, 0.774);
     padding-right: 10px;
 }
+/*Allows for dynamic underlining with blue of the tab currently being hovered over */
 .nav-link:hover{
     border-bottom: 3px solid rgb(47, 120, 255);
 }
@@ -144,11 +144,22 @@ html body {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+#container-login {
+    text-align: center;
+}
+#container-invitation {
+    margin-top: 100px;
+    text-align: center;
+}
+
+#card-invitation {
+    padding: 10px;
+    margin-top: 50px; 
+}
+
 @media only screen and (max-width: 768px){
     .row {
         width: 100%;
-        margin-right: px;
-
     }
     .col-12 {
         width: 100%;
