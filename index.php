@@ -16,14 +16,14 @@ $db->query("create table user (
 $db->query("drop table if exists invite;");
 $db->query("create table invite (
     invite_id int not null primary key auto_increment,
-    group_name text not null,
+    group_name text null,
     sport text not null,
     gender text not null,
-    num_players text not null,
+    num_players int not null,
     description text not null,
     location text not null,
-    time int not null,
-    date int not null);");
+    time text not null,
+    date text not null);");
 
 
 $db->query("drop table if exists invite_users;");
@@ -31,41 +31,6 @@ $db->query("create table invite_users (
     invite_id int not null,
     user_id int not null,
     status text not null);");
-    
-//Adding one user into the database
-$stmt1 = $db->prepare("insert into user (username, password) 
-VALUES ('Billy', 'hello');");
-$stmt1->bind_param("ss", $username, $password);
-$stmt1->execute();
-$res1 = $stmt1->get_result();
-
-//Adding another user into the database
-$stmt2 = $db->prepare("insert into user ( username, password) 
-VALUES ('Joe', 'bye');");
-$stmt2->bind_param("ss", $username, $password);
-$stmt2->execute();
-$res2 = $stmt2->get_result();
-
-
-
-
-// $result = mysqli_query($conn, $sql);
-
-// $stmt = $db->prepare("insert into question (question, answer, points) values (?,?,?);");
-// $stmt->bind_param("is", $id, $label);
-
-
-// $stmt = $db->prepare("select * from user where email = ?;");
-// $stmt->bind_param("s", $_POST["email"]);
-// if (!$stmt->execute()) {
-//     $error_msg = "Error checking for user";
-// } 
-
-// else { 
-//     // result succeeded
-//     $res = $stmt->get_result();
-// }
-
 ?>
 
 <!DOCTYPE html>

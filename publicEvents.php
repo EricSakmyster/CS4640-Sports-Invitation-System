@@ -1,3 +1,23 @@
+<?php 
+  if (!empty($_POST)){
+    include("database_credentials.php"); // define variables
+    $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
+    if (empty(mysqli_query($db, "SELECT * FROM invite_users WHERE 'user_id' != 1 AND 'invite_id' != $_POST['invite_id'] AND 'status' != $_POST['status'];")){ //Need to update this with the session user_id
+      $stmt = $db->prepare("insert into invite_users (invite_id, user_id, status) 
+      VALUES (?, ?, ?); ");
+    }
+    else{
+      $stmt = $db->prepare("update invite_users set status=? where user_id=? and invite_id=?");
+    }
+    $stmt->bind_param("iis", $invite_id, $user_id, $status);
+    $invite_id = $_POST['invite_id'];
+    $user_id = 1; //Need to update this with the session user_id
+    $status = $_POST['status'];
+    $stmt->execute();
+    $stmt->close();
+    $db->close();
+  } 
+?>
 <!DOCTYPE html>
 <html lang="en">
     <!-- 
@@ -40,10 +60,10 @@
                               <a class="nav-link" href="index.html">Home</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link" style = "border-bottom: 3px solid rgb(47, 120, 255);" aria-current="page" href="publicEvents.html">Public Events</a>
+                              <a class="nav-link" style = "border-bottom: 3px solid rgb(47, 120, 255);" aria-current="page" href="publicEvents.php">Public Events</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link" href="createEvent.html">Create Event</a>
+                              <a class="nav-link" href="createEvent.php">Create Event</a>
                           </li>
                           <li class="nav-item">
                               <a class="nav-link" href="#">User Search</a>
@@ -62,63 +82,42 @@
                   <button type="button" class="btn btn-outline-primary">Search</button> <!--Search button-->
                   <button type="button" class="btn btn-outline-primary">Filter</button> <!--Filter button-->
               </div>
-
-              <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
-                  <div class="card-header">
-                    Featured
-                  </div>
-                  <div class="card-body"> 
-                    <h5 class="card-title">Co-Rec Pick-Up Soccer</h5> <!--Soccer invitation event-->
-                    <p class="card-text">5 v 5</p> <!--Amount of player-->
-                    <p class="card-text">@Carr's Field</p> <!--Location of event-->
-                    <p class="card-text">4:30-5:30 PM 9/10/21</p> <!--Date/Time of event-->
-                    <p class="card-text">4 Spots Remaining</p> <!--Amount of spots left-->
-                    <a href="#" class="btn btn-primary">Going</a> <!--Going button-->
-                    <a href="#" class="btn btn-warning">Unsure</a> <!--Unsure button-->
-                    <a href="#" class="btn btn-danger">Not going</a> <!--Not going button-->
-                  </div>
-                  <div class="card-footer text-muted">
-                    2 days ago <!--When the even was posted-->
-                  </div>
-              </div>
-
-              <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
-                  <div class="card-header">
-                    Featured
-                  </div>
-                  <div class="card-body"> 
-                    <h5 class="card-title">Women's Pick-Up Spikeball</h5> <!--Spikeball invitation event-->
-                    <p class="card-text">2 v 2</p> <!--Amount of player-->
-                    <p class="card-text">@Ohill Field</p> <!--Location of event-->
-                    <p class="card-text">8-9 AM 9/15/21</p> <!--Date/Time of event-->
-                    <p class="card-text">2 Spots Remaining</p> <!--Amount of spots left-->
-                    <a href="#" class="btn btn-primary">Going</a> <!--Going button-->
-                    <a href="#" class="btn btn-warning">Unsure</a> <!--Unsure button-->
-                    <a href="#" class="btn btn-danger">Not going</a> <!--Not going button-->
-                  </div>
-                  <div class="card-footer text-muted">
-                    2 days ago <!--When the even was posted-->
-                  </div>
-              </div>
-
-              <div class="card text-center" id="card-invitation" style="border: 5px solid black; margin-bottom: 15px;">
-                  <div class="card-header">
-                    Featured
-                  </div>
-                  <div class="card-body"> 
-                    <h5 class="card-title">Men's Pick-Up Basketball</h5> <!--Basketball invitation event-->
-                    <p class="card-text">5 v 5</p> <!--Amount of player-->
-                    <p class="card-text">@Slaughter</p> <!--Location of event-->
-                    <p class="card-text">9-10:30 PM 9/15/21</p> <!--Date/Time of event-->
-                    <p class="card-text">3 Spots Remaining</p> <!--Amount of spots left-->
-                    <a href="#" class="btn btn-primary">Going</a> <!--Going button-->
-                    <a href="#" class="btn btn-warning">Unsure</a> <!--Unsure button-->
-                    <a href="#" class="btn btn-danger">Not going</a> <!--Not going button-->
-                  </div>
-                  <div class="card-footer text-muted">
-                    2 days ago <!--When the even was posted-->
-                  </div>
-              </div>
+              <?php
+                include("database_credentials.php"); // define variables
+                $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
+                mysqli_select_db($db, $dbdatabase);
+                $invites = mysqli_query($db, "SELECT * FROM invite;");
+                foreach ($invites as $invite) { 
+              ?>
+                <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
+                    <div class="card-header">
+                      Featured
+                    </div>
+                    <div class="card-body"> 
+                      <h5 class="card-title"><?php echo $invite['gender'], " ", $invite['sport']; ?></h5> <!--gender and sport in header-->
+                      <?php if ($invite['group_name']){ ?>
+                        <p class="card-text">Run by <?php echo $invite['group_name']; ?></p> <!--Name of group hosting-->
+                      <?php } ?>
+                      <p class="card-text"><?php echo $invite['num_players']/2, " v ", $invite['num_players']/2; ?></p> <!--Amount of player-->
+                      <p class="card-text">@<?php echo $invite['location']; ?></p> <!--Location of event-->
+                      <p class="card-text"><?php echo $invite['time'], " ", $invite['date']; ?></p> <!--Date/Time of event-->
+                      <p class="card-text"><?php echo $invite['description']; ?></p> <!-- description of event -->
+                      <p class="card-text">Spots Remaining: <?php echo $invite['num_players']; ?></p> <!--Amount of spots left-->
+                      <form action="" method = "post">
+                        <input type="hidden" name="invite_id" value=<?php echo $invite['invite_id']; ?>>
+                        <button type="submit" name="status" value="Going" class="btn btn-primary">Going</a> <!--Going button-->
+                        <button type="submit" name="status" value="Unsure" class="btn btn-warning">Unsure</a> <!--Unsure button-->
+                        <button type="submit" name="status" value="Not Going" class="btn btn-danger">Not going</a> <!--Not going button-->
+                      </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                      2 days ago <!--When the even was posted-->
+                    </div>
+                </div>
+              <?php } 
+                $invites.close();
+                $db.close();
+              ?>
           </div>
         </div>
         <footer class = 'primary-footer'>
