@@ -5,8 +5,14 @@
 // // /** DATABASE SETUP **/
 include("database_credentials.php"); // define variables
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-$db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
+$db = new mysqli($dbserver, $dbuser, $dbpass);
 
+$cd = "create database if not exists ems5fa";
+if ($db->query($cd) === TRUE) {
+  echo "Database created";
+} else {
+  echo "Error creating database: " . $cd->error;
+}
 // Creating the user database
 $db->query("create table if not exists user (
     user_id int not null primary key auto_increment,
