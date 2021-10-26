@@ -1,18 +1,31 @@
 <?php 
+  session_start();
   if (!empty($_POST)){
     include("database_credentials.php"); // define variables
     $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
-    if (empty(mysqli_query($db, "SELECT * FROM 'invite_users' WHERE 'user_id' <> 1 AND 'invite_id' <> $_POST['invite_id'] AND 'status' <> $_POST['status']")){ //Need to update this with the session user_id
+    $invite_id = $_POST['invite_id'];
+    $stmt_user_id = $db->prepare("select user_id from user where username=?");
+    $stmt_user_id->bind_param("s", $SESSION['username']);
+    $stmt_user_id->execute();
+    $result = $stmt_user_id->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt_user_id->close();
+    $user_id = $rows[0]['user_id'];
+    $status = $_POST['status'];
+    $stmt_check = $db->prepare("select * from invite_users where user_id = ? AND invite_id = ? AND status = ?");
+    $stmt_check->bind_param("iis", $invite_id, $user_id, $status);
+    $stmt_check->execute();
+    $result = $stmt_check->get_result();
+    $stmt_check->close();
+    if (empty($result)) {
       $stmt = $db->prepare("insert into invite_users (invite_id, user_id, status) 
       VALUES (?, ?, ?); ");
+      $stmt->bind_param("iis", $invite_id, $user_id, $status);
     }
     else{
       $stmt = $db->prepare("update invite_users set status=? where user_id=? and invite_id=?");
+      $stmt->bind_param("sii", $status, $user_id, $invite_id);
     }
-    $stmt->bind_param("iis", $invite_id, $user_id, $status);
-    $invite_id = $_POST['invite_id'];
-    $user_id = 1; //Need to update this with the session user_id
-    $status = $_POST['status'];
     $stmt->execute();
     $stmt->close();
     $db->close();
@@ -115,8 +128,8 @@
                     </div>
                 </div>
               <?php } 
-                $invites.close();
-                $db.close();
+                $invites->close();
+                $db->close();
               ?>
           </div>
         </div>
