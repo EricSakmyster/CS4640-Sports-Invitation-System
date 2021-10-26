@@ -10,15 +10,11 @@
     session_start();
 
     $error_msg = "";
+    if(isset($_SESSION["username"])){
+        header("Location: login.php?loggedout=true");
+    }
+    else{
+        header("Location: login.php");
+    }
     session_destroy();
-    header("Location: login.php");
-
-
-    // if(isset($_SESSION["username"])) {
-    //     unset($_SESSION["username"]);
-    //     unset($_SESSION["password"]);
-    // }
-    // else {
-    //     $error_msg = "Didn't log out properly";
-    // }
    ?>
