@@ -1,4 +1,6 @@
 <?php
+// URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System-Sprint-3
+
 // Sources: https://www.quora.com/How-can-I-continue-a-session-through-PHP-pages-after-I-login
 // // /** DATABASE SETUP **/
 include("database_credentials.php"); // define variables

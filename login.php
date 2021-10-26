@@ -98,7 +98,7 @@ if (isset($_POST["username"])) { // validate the email coming in
                             echo "Registration success for " . $_GET["username"];
                         }
                         if (isset($_GET['loggedout'])){
-                            echo "You've been logged out."
+                            echo "You've been logged out.";
                         }
                     ?>
                 </div>
