@@ -31,7 +31,7 @@ if (!$stmt->execute()) {
     } else {
         // User was not found.  For our game, we'll just insert them!
         $insert = $db->prepare("insert into user (username, password) values (?, ?);");
-        $password = md5($_POST["password"]);
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
         $insert->bind_param("ss", $_POST["username"], $password);
         if (!$insert->execute()) {
             $error_msg = "Error creating new user";
@@ -145,7 +145,7 @@ if (!$stmt->execute()) {
                 </div>
                 <div class="row justify-content-center">
                     <div class="col">
-                        <a href="#" class="text-decoration-none">Forgot Password?</a> <!--"Forgot Password button"-->
+                        <!-- <a href="#" class="text-decoration-none">Forgot Password?</a> "Forgot Password button" -->
                     </div>
                 </div>
             </form>
@@ -172,7 +172,7 @@ if (!$stmt->execute()) {
 
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -191,4 +191,4 @@ if (!$stmt->execute()) {
     // }
 ?>
 </body>
-</html>
+</html> -->
