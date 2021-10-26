@@ -2,7 +2,7 @@
   if (!empty($_POST)){
     include("database_credentials.php"); // define variables
     $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
-    if (empty(mysqli_query($db, "SELECT * FROM invite_users WHERE 'user_id' != 1 AND 'invite_id' != $_POST['invite_id'] AND 'status' != $_POST['status'];")){ //Need to update this with the session user_id
+    if (empty(mysqli_query($db, "SELECT * FROM 'invite_users' WHERE 'user_id' <> 1 AND 'invite_id' <> $_POST['invite_id'] AND 'status' <> $_POST['status']")){ //Need to update this with the session user_id
       $stmt = $db->prepare("insert into invite_users (invite_id, user_id, status) 
       VALUES (?, ?, ?); ");
     }
