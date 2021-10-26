@@ -5,7 +5,8 @@
     // $dbpass = "D_uGKsSqe1fe";
     // $dbdatabase = "mt5qz";
 
-    $dbserver = "localhost";
+    //Connect to the database locally
+    $dbserver = "localhost"; 
     $dbuser = "root";
     $dbpass = "";
     $dbdatabase = "test";

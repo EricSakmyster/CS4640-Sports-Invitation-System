@@ -14,7 +14,7 @@
     // Check if the user submitted the form (the form in the HTML below
 // submits back to this page, which is okay for now.  We will check for
 // form data and determine whether to re-show this form with a message
-// or to redirect the user to the trivia game.
+
 if (isset($_POST["username"])) { // validate the email coming in
     $stmt = $db->prepare("select password from user where username = ?;");
     $stmt->bind_param("s", $_POST["username"]);
@@ -24,44 +24,17 @@ if (isset($_POST["username"])) { // validate the email coming in
         // result succeeded
         $res = $stmt->get_result();
         $data = $res->fetch_all(MYSQLI_ASSOC);
-        
-        //if the user is in the database and if the password match, then login -- DONE
-        
-        //if the user isn't in the database, then error message and redirect back to login
-
-        //if password doesn't match, then incorrect password
-        // password_verify(string $password, string $hash): bool
 
         if (empty($data)) {
             $usernameErr = "Incorrect username.";
             // header("Location: login.php");
         }
 
-            // <html><p>Incorrect password, retry typing your password in</p></html>
-            // echo "Incorrect password, retry typing your password in";
-            // header("Location: index.php");
-        
-
-        // if(strcmp(md5($_POST["password"]), $data[0]["password"]) != 0) {
-        //     header("Location: login.php");
-        // }
-        // foreach($data as $i) {
         else if(!password_verify($_POST["password"], $data[0]["password"])) {
                 $passwordErr = "Incorrect password.";
-                // header("Location: login.php");
         }
-        // }
-
-        // if(password_verify(md5($_POST["password"]), $data[0]["password"])) {
-        //     header("Location: login.php");
-        // }
-        
-
-
-        // if (!empty($data)) {
         else {
-            // user was found!  Send to the game (with a GET parameter containing their email)
-            // header("Location: trivia_question.php?email={$data[0]["email"]}");
+            // User was found!  Send to the home page
             $_SESSION["username"] = $_POST["username"];
             echo "Session variables are set.";
             header("Location: index.php");
@@ -120,7 +93,17 @@ if (isset($_POST["username"])) { // validate the email coming in
             <h1>Welcome to UVA Sports Invitations</h1>
             <form class="form" method="post" name="login">
                 <div class="row justify-content-center" style="margin-bottom: 5px; margin-top:200px;"> <!--Username field-->
-                    <div class="col-2">
+                    <?php 
+                        if (isset($_GET["username"])) {
+                            echo "Registration success for " . $_GET["username"];
+                        }
+                        if (isset($_GET['loggedout'])){
+                            echo "You've been logged out."
+                        }
+                    ?>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-2"> 
                         <label for="usr">Username:</label>
                     </div>
                     <div class="col-2">
