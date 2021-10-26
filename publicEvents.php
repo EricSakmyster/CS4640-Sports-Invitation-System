@@ -1,39 +1,43 @@
 <?php 
   session_start();
   if($_SESSION["username"] == NULL) {
-      header("Location: login.php");
+    header("Location: login.php");
   }
-
-  if (!empty($_POST)){
+  else {
     include("database_credentials.php"); // define variables
     $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
-    $invite_id = $_POST['invite_id'];
     $stmt_user_id = $db->prepare("select user_id from user where username=?");
-    $stmt_user_id->bind_param("s", $SESSION['username']);
+    $stmt_user_id->bind_param("s", $_SESSION["username"]);
     $stmt_user_id->execute();
     $result = $stmt_user_id->get_result();
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     $stmt_user_id->close();
     $user_id = $rows[0]['user_id'];
-    $status = $_POST['status'];
-    $stmt_check = $db->prepare("select * from invite_users where user_id = ? AND invite_id = ? AND status = ?");
-    $stmt_check->bind_param("iis", $invite_id, $user_id, $status);
-    $stmt_check->execute();
-    $result = $stmt_check->get_result();
-    $stmt_check->close();
-    if (empty($result)) {
-      $stmt = $db->prepare("insert into invite_users (invite_id, user_id, status) 
-      VALUES (?, ?, ?); ");
-      $stmt->bind_param("iis", $invite_id, $user_id, $status);
+    if (!empty($_POST)){
+      include("database_credentials.php"); // define variables
+      $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
+      $invite_id = $_POST['invite_id'];
+      $status = $_POST['status'];
+      $stmt_check = $db->prepare("select * from invite_users where user_id = ? AND invite_id = ?");
+      $stmt_check->bind_param("ii", $user_id, $invite_id);
+      $stmt_check->execute();
+      $result2 = $stmt_check->get_result();
+      $rows2 = $result2->fetch_all(MYSQLI_ASSOC);
+      $stmt_check->close();
+      if (empty($rows2)) {
+        $stmt = $db->prepare("insert into invite_users (invite_id, user_id, status) 
+        VALUES (?, ?, ?); ");
+        $stmt->bind_param("iis", $invite_id, $user_id, $status);
+      }
+      else{
+        $stmt = $db->prepare("update invite_users set status=? where user_id=? and invite_id=?");
+        $stmt->bind_param("sii", $status, $user_id, $invite_id);
+      }
+      $stmt->execute();
+      $stmt->close();
     }
-    else{
-      $stmt = $db->prepare("update invite_users set status=? where user_id=? and invite_id=?");
-      $stmt->bind_param("sii", $status, $user_id, $invite_id);
-    }
-    $stmt->execute();
-    $stmt->close();
     $db->close();
-  } 
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +91,6 @@
                           </li>
                       </ul>
                   </div>
-                  <a class="btn btn-primary btn-md" id= "login" href="login.php" role="button">Login</a>
                   <a class="btn btn-primary btn-md" id= "logout" href="logout.php" role="button">Logout</a>
               </div>
           </nav>
@@ -101,35 +104,91 @@
                   <button type="button" class="btn btn-outline-primary">Filter</button> <!--Filter button-->
               </div>
               <?php
-                include("database_credentials.php"); // define variables
+                include("database_credentials.php");
                 $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
                 mysqli_select_db($db, $dbdatabase);
                 $invites = mysqli_query($db, "SELECT * FROM invite;");
                 foreach ($invites as $invite) { 
               ?>
                 <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
-                    <div class="card-header">
-                      Featured
-                    </div>
+                    <?php 
+                    $user_status = mysqli_query($db, "SELECT status FROM invite_users;");
+                    $status_check = $db->prepare("select status from invite_users where user_id = ? AND invite_id = ?");
+                    $status_check->bind_param("ii", $user_id, $invite['invite_id']);
+                    $status_check->execute();
+                    $result_status = $status_check->get_result();
+                    $rows_status = $result_status->fetch_all(MYSQLI_ASSOC);
+                    $status_check->close();
+                    if (!empty($rows_status)){
+                      if(strcmp($rows_status[0]["status"], "Going") == 0){
+                    ?>                       
+                        <div class="card-header" style= "background-color: #00bfff">
+                          You are going!
+                        </div>
+                      <?php
+                      }
+                      else if(strcmp($rows_status[0]["status"], "Unsure") == 0){
+                      ?>  
+                        <div class="card-header" style= "background-color: yellow">
+                          You are unsure!
+                        </div>
+                      <?php 
+                      }
+                      else{
+                      ?>
+                        <div class="card-header" style= "background-color: red">
+                          You are not going!
+                        </div>
+                    <?php
+                      }
+                    }
+                    else{
+                    ?>
+                      <div class="card-header">
+                        You have not responded!
+                      </div>
+                    <?php
+                    }
+                    ?>
                     <div class="card-body"> 
                       <h5 class="card-title"><?php echo $invite['gender'], " ", $invite['sport']; ?></h5> <!--gender and sport in header-->
                       <?php if ($invite['group_name']){ ?>
                         <p class="card-text">Run by <?php echo $invite['group_name']; ?></p> <!--Name of group hosting-->
                       <?php } ?>
-                      <p class="card-text"><?php echo $invite['num_players']/2, " v ", $invite['num_players']/2; ?></p> <!--Amount of player-->
                       <p class="card-text">@<?php echo $invite['location']; ?></p> <!--Location of event-->
                       <p class="card-text"><?php echo $invite['time'], " ", $invite['date']; ?></p> <!--Date/Time of event-->
                       <p class="card-text"><?php echo $invite['description']; ?></p> <!-- description of event -->
-                      <p class="card-text">Spots Remaining: <?php echo $invite['num_players']; ?></p> <!--Amount of spots left-->
+                      <?php
+                        $num_check = $db->prepare("select COUNT(*) AS count from invite_users where invite_id = ? and status = 'Going'");
+                        $num_check->bind_param("i",$invite['invite_id']);
+                        $num_check->execute();
+                        $result_num = $num_check->get_result();
+                        $rows_num = $result_num->fetch_all(MYSQLI_ASSOC);
+                        $num_check->close();
+                        $count = $rows_num[0]["count"];
+                      ?>
+                      <p class="card-text">Spots Remaining: 
+                        <?php 
+                          echo $invite['num_players'] - $count; 
+                        ?>
+                      </p> <!--Amount of spots left-->
                       <form action="" method = "post">
-                        <input type="hidden" name="invite_id" value=<?php echo $invite['invite_id']; ?>>
-                        <button type="submit" name="status" value="Going" class="btn btn-primary">Going</a> <!--Going button-->
+                        <input type="hidden" name="invite_id" value=<?php echo $invite['invite_id']; ?>> <!-- Hidden field to send invite_id -->
+                        <?php 
+                          if(($invite['num_players'] - $count) == 0){
+                        ?>
+                            <button type="submit" name="status" value="Going" class="btn btn-primary" disabled>Going</a> <!--Going button disabled-->
+                        <?php
+                          }
+                          else{
+                        ?>
+                            <button type="submit" name="status" value="Going" class="btn btn-primary">Going</a> <!--Going button-->
+                        <?php
+                          }
+                        ?>
                         <button type="submit" name="status" value="Unsure" class="btn btn-warning">Unsure</a> <!--Unsure button-->
                         <button type="submit" name="status" value="Not Going" class="btn btn-danger">Not going</a> <!--Not going button-->
                       </form>
-                    </div>
-                    <div class="card-footer text-muted">
-                      2 days ago <!--When the even was posted-->
                     </div>
                 </div>
               <?php } 
@@ -139,7 +198,7 @@
           </div>
         </div>
         <footer class = 'primary-footer'>
-          <nav class = 'footer-nav'>
+          <nav class = 'footer-nav' style= "margin-top: 10px;">
               <a class="btn btn-primary btn-sm" href="index.php" role="button">Home
               </a> |
               <a class="btn btn-primary btn-sm" href="publicEvents.php" role="button">Public Events

@@ -7,8 +7,6 @@ include("database_credentials.php"); // define variables
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
 
-
-
 // else {
 //     header("Location: index.php?username={$data[0]["username"]}");
 // }
@@ -71,7 +69,7 @@ $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
 //     // result succeeded
 //     $res = $stmt->get_result();
 // }
-
+$db->close();
 ?>
 
 <!DOCTYPE html>
