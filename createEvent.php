@@ -1,21 +1,26 @@
 <?php 
-    // // /** DATABASE SETUP **/
-    include("database_credentials.php"); // define variables
-    // $conn = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
-    $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
-
     session_start();
-
-
     if($_SESSION["username"] == NULL) {
         header("Location: login.php");
+    } 
+    // Checks if the time inputted matches an accepted time format
+    function isValidTime($time){
+        return preg_match("/^(1[0-2]|0[1-9]|[1-9]):[0-5][0-9] (PM|AM|pm|am)+$/", $time);
     }
-
-    
-
-
-
-
+    // Checks if the date inputted matches an accepted date format
+    function isValidDate($date){
+        return preg_match("/^(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])-[0-9][0-9][0-9][0-9]+$/", $date);
+    }
+    // Initializes all the error messages possible for each form element
+    $sportErr = "";
+    $genderErr = "";
+    $numPlayersErr="";
+    $descriptionErr="";
+    $locationErr="";
+    $timeErr="";
+    $dateErr="";
+    $success = 0;
+    $error_present = 0;
     if (!empty($_POST)){
         include("database_credentials.php"); // define variables
         $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
@@ -23,14 +28,71 @@
         VALUES (?, ?, ?, ?, ?, ?, ?, ?); ");
         $stmt->bind_param("sssissss", $group_name, $sport, $gender, $num_players, $description, $location, $time, $date);
         $group_name = $_POST['group_name'];
-        $sport = $_POST['sport'];
-        $gender = $_POST['gender'];
-        $num_players = $_POST['num_players'];
-        $description = $_POST['description'];
-        $location = $_POST['location'];
-        $time = $_POST['time'];
-        $date = $_POST['date'];
-        $stmt->execute();
+        if (empty($_POST['sport'])){
+            $sportErr = "Sport is required";
+            $error_present = 1;
+        }
+        else{
+            $sport = $_POST['sport'];
+        }
+        if (empty($_POST['gender'])){
+            $genderErr = "Gender is required";
+            $error_present = 1;
+        }
+        else{
+            $gender = $_POST['gender'];
+        }
+        if (empty($_POST['num_players'])){
+            $numPlayersErr = "Number of players is required";
+            $error_present = 1;
+        }
+        else if (is_int($_POST['num_players'])){
+            $numPlayersErr = "Must be number";
+            $error_present = 1;
+        }
+        else{
+            $num_players = $_POST['num_players'];
+        }
+        if (empty($_POST['description'])){
+            $descriptionErr = "Description is required";
+            $error_present = 1;
+        }
+        else{
+            $description = $_POST['description'];
+        }
+        if (empty($_POST['location'])){
+            $locationErr = "Location is required";
+            $error_present = 1;
+        }
+        else{
+            $location = $_POST['location'];
+        }
+        if (empty($_POST['time'])){
+            $timeErr = "Time is required";
+            $error_present = 1;
+        }
+        else if (!isValidTime($_POST['time'])){
+            $timeErr = "Time must be in format DD:DD AM/PM";
+            $error_present = 1;
+        }
+        else{
+            $time = $_POST['time'];
+        }
+        if (empty($_POST['date'])){
+            $dateErr = "Date is required";
+            $error_present = 1;
+        }
+        else if (!isValidDate($_POST['date'])){
+            $dateErr = "Date must be in format MM-DD-YYYY";
+            $error_present = 1;
+        }
+        else{
+            $date = $_POST['date'];
+        }
+        if (!$error_present){
+            $stmt->execute();
+            $success = 1;
+        }
         $stmt->close();
         $db->close();
     } 
@@ -47,7 +109,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
         <meta name="author" content="Eric Sakmyster and Merron Tecleab">
-        <meta name="description" content="Home page of website">
+        <meta name="description" content="Form to create a sports invite">
         <meta name="keywords" content="Eric Merron createinvite">    
     </head>
     <body>
@@ -76,7 +138,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <a class="btn btn-primary btn-md" id= "login" href="login.php" role="button">Login</a>
                         <a class="btn btn-primary btn-md" id= "logout" href="logout.php" role="button">Logout</a>
                     </div>
                 </nav>
@@ -88,6 +149,24 @@
                             <!-- Form for creating a sports invitation that would go on the Public Events Hub -->
                             <form action="" method = "post" class="row g-3">
                                 <h1 style="text-align: center; text-decoration: underline;"> Create an Event</h1>
+                                <?php 
+                                    // Creates a success alert if the invite form was valid, or an invalid alert if not
+                                    if ($success){
+                                ?>
+                                        <div class="alert alert-success" style="text-align:center" role="alert">
+                                            Invite Created!
+                                        </div>
+                                <?php
+                                    }
+                                    if ($error_present){
+                                ?>
+                                        <div class="alert alert-danger" style="text-align:center" role="alert">
+                                            Invite Invalid!
+                                        </div>
+                                <?php
+                                    }
+                                ?>
+                                <p style="color:red">* Required field</p>
                                 <div class="col-md-6">
                                     <!-- If the sporting event is hosted by a certain group or sports team -->
                                     <label for="groupName" class="form-label">Group Name (if applicable)</label>
@@ -95,7 +174,9 @@
                                 </div>
                                 <!-- Pick the sport being played -->
                                 <div class='col-8'>
-                                    <label class="form-label">Sport</label>
+                                    <label class="form-label">Sport
+                                    <p style="color:red; display:inline">*</p>
+                                    </label>
                                     <select class="form-select" name = "sport" aria-label="Sports Select">
                                         <option selected disabled>Pick a Sport</option>
                                         <option value="Soccer">Soccer</option>
@@ -108,9 +189,12 @@
                                         <option value="Frisbee">Frisbee</option>
                                         <option value="Volleyball">Volleyball</option>
                                     </select>
+                                    <p style="color:red"><?php echo $sportErr;?></p>
                                 </div>
                                 <!-- What gender you want to play, or both -->
-                                <label class="form-label">Gender</label>
+                                <label class="form-label">Gender 
+                                <p style="color:red; display:inline">*</p>
+                                </label>
                                 <div class="col-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="gender" id="men" value="Men">
@@ -124,31 +208,47 @@
                                         <input class="form-check-input" type="radio" name="gender" id="coed" value="Co-Ed">
                                         <label class="form-check-label" for="coed">Co-Ed</label>
                                     </div>
+                                    <p style="color:red"><?php echo $genderErr;?></p>
                                 </div>
                                 <!-- Input number of players needed -->
                                 <div class="col-md-6">
-                                    <label for="number" class="form-label">Number of Players</label>
+                                    <label for="number" class="form-label">Number of Players
+                                    <p style="color:red; display:inline">*</p>
+                                    </label>
                                     <input type="number" class="form-control" name="num_players" id="number" placeholder="1, 2, 3, etc.">
+                                    <p style="color:red"><?php echo $numPlayersErr;?></p>
                                 </div>
                                 <!-- Any additional information to send out -->
                                 <div class="col-12">
-                                    <label for="description" class="form-label">Description</label>
+                                    <label for="description" class="form-label">Description
+                                    <p style="color:red; display:inline">*</p>
+                                    </label>
                                     <input type="text" class="form-control" name = "description" id="description" placeholder="Any additional information?">
+                                    <p style="color:red"><?php echo $descriptionErr;?></p>
                                 </div>
                                 <!-- Input the location of the sporting event -->
                                 <div class="col-12">
-                                    <label for="location" class="form-label">Location</label>
+                                    <label for="location" class="form-label">Location
+                                    <p style="color:red; display:inline">*</p>
+                                    </label>
                                     <input type="text" class="form-control" name = "location" id="location" placeholder="Carr's Field, Ohill, etc.">
+                                    <p style="color:red"><?php echo $locationErr;?></p>
                                 </div>
                                 <!-- Time of event -->
-                                <div class="col-4">
-                                    <label for="time" class="form-label">Time</label>
+                                <div class="col-md-4">
+                                    <label for="time" class="form-label">Time
+                                    <p style="color:red; display:inline">*</p>
+                                    </label>
                                     <input type="text" class="form-control" name = "time" id="time" placeholder="4:30 PM, 9:00 AM, etc.">
+                                    <p style="color:red"><?php echo $timeErr;?></p>
                                 </div>
                                 <!-- Date of event -->
                                 <div class="col-md-6">
-                                    <label for="date" class="form-label">Date</label>
-                                    <input type="text" class="form-control" name = "date" id="date" placeholder="Ex. 10/19/2021">
+                                    <label for="date" class="form-label">Date
+                                    <p style="color:red; display:inline">*</p>
+                                    </label>
+                                    <input type="text" class="form-control" name = "date" id="date" placeholder="Ex. 10-19-2021">
+                                    <p style="color:red"><?php echo $dateErr;?></p>
                                 </div>
                                 <!-- When this button gets pressed, the invitation would then be put in the Hub -->
                                 <div class="col-12">
