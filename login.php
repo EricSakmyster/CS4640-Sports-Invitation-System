@@ -15,7 +15,7 @@
 // form data and determine whether to re-show this form with a message
 // or to redirect the user to the trivia game.
 if (isset($_POST["username"])) { // validate the email coming in
-    $stmt = $db->prepare("select * from user where username = ?;");
+    $stmt = $db->prepare("select password from user where username = ?;");
     $stmt->bind_param("s", $_POST["username"]);
     if (!$stmt->execute()) {
         $error_msg = "Error checking for user";
@@ -31,7 +31,7 @@ if (isset($_POST["username"])) { // validate the email coming in
         //if password doesn't match, then incorrect password
         // password_verify(string $password, string $hash): bool
 
-        if(strcmp($data[0]["username"], $username) == 0) {
+        if (empty($data)) {
             echo "Incorrect username, retry logging in";
             header("Location: login.php");
         }
@@ -41,18 +41,28 @@ if (isset($_POST["username"])) { // validate the email coming in
             // header("Location: index.php");
         
 
-        if(password_verify($password, $data[0]["password"]) == false) {
-            header("Location: login.php");
-        }
+        // if(strcmp(md5($_POST["password"]), $data[0]["password"]) != 0) {
+        //     header("Location: login.php");
+        // }
+        // foreach($data as $i) {
+        else if(!password_verify($_POST["password"], $data[0]["password"])) {
+                header("Location: login.php");
+            }
+        // }
+
+        // if(password_verify(md5($_POST["password"]), $data[0]["password"])) {
+        //     header("Location: login.php");
+        // }
+        
 
 
-        if (!empty($data)) {
+        // if (!empty($data)) {
+        else {
             // user was found!  Send to the game (with a GET parameter containing their email)
             // header("Location: trivia_question.php?email={$data[0]["email"]}");
-            $_SESSION["username"] = $username;
-            $_SESSION["password"] = $password;
+            $_SESSION["username"] = $_POST["username"];
             echo "Session variables are set.";
-            header("Location: index.php?username={$data[0]["username"]}");
+            header("Location: index.php");
             exit();
         } 
         // else {
@@ -64,6 +74,8 @@ if (isset($_POST["username"])) { // validate the email coming in
         // }
     }
 
+    $stmt->close();
+    $db->close();
 }
 
 
@@ -164,12 +176,12 @@ if (isset($_POST["username"])) { // validate the email coming in
                     <div class="col">
                         <!-- <a href="index.php" class="btn btn-primary btn-sm">Login</a> Login button -->
                         <input type="submit" value="Login" name="submit" class="login-button"/>
-                        <p class="link"><a href="registration.php">New Registration</a></p>
+                        <p class="link"><a href="registration.php">New user?</a></p>
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col">
-                        <a href="#" class="text-decoration-none">Forgot Password?</a> <!--"Forgot Password button"-->
+                        <!-- <a href="#" class="text-decoration-none">Forgot Password?</a> "Forgot Password button" -->
                     </div>
                 </div>
             </form>

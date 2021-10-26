@@ -1,5 +1,9 @@
 <?php 
   session_start();
+  if($_SESSION["username"] == NULL) {
+      header("Location: login.php");
+  }
+
   if (!empty($_POST)){
     include("database_credentials.php"); // define variables
     $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
@@ -63,14 +67,14 @@
         <header>
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container-fluid">
-                  <a class="navbar-brand" href="index.html">UVA Sports Invitations</a>
+                  <a class="navbar-brand" href="index.php">UVA Sports Invitations</a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
                   </button>
                   <div class="collapse navbar-collapse" id="navbarNavDropdown">
                       <ul class="navbar-nav">
                           <li class="nav-item active">
-                              <a class="nav-link" href="index.html">Home</a>
+                              <a class="nav-link" href="index.php">Home</a>
                           </li>
                           <li class="nav-item">
                               <a class="nav-link" style = "border-bottom: 3px solid rgb(47, 120, 255);" aria-current="page" href="publicEvents.php">Public Events</a>
@@ -83,7 +87,8 @@
                           </li>
                       </ul>
                   </div>
-                  <a class="btn btn-primary btn-md" id= "login" href="login.html" role="button">Login</a>
+                  <a class="btn btn-primary btn-md" id= "login" href="login.php" role="button">Login</a>
+                  <a class="btn btn-primary btn-md" id= "logout" href="logout.php" role="button">Logout</a>
               </div>
           </nav>
         </header>
@@ -135,12 +140,12 @@
         </div>
         <footer class = 'primary-footer'>
           <nav class = 'footer-nav'>
-              <a class="btn btn-primary btn-sm" href="index.html" role="button">Home
+              <a class="btn btn-primary btn-sm" href="index.php" role="button">Home
               </a> |
-              <a class="btn btn-primary btn-sm" href="publicEvents.html" role="button">Public Events
+              <a class="btn btn-primary btn-sm" href="publicEvents.php" role="button">Public Events
                   <span class="badge bg-secondary">0</span>
               </a> |
-              <a class="btn btn-primary btn-sm" href="createEvent.html" role="button">Create Event
+              <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
               </a> |
               <a class="btn btn-primary btn-sm" href="#" role="button">User Search</a>
           </nav>

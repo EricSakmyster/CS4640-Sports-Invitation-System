@@ -1,11 +1,17 @@
 <?php
-/** DATABASE SETUP **/
+// Sources: https://www.quora.com/How-can-I-continue-a-session-through-PHP-pages-after-I-login
+// // /** DATABASE SETUP **/
 include("database_credentials.php"); // define variables
-
-
+// $conn = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
 /** SETUP **/
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
+
+
+
+// else {
+//     header("Location: index.php?username={$data[0]["username"]}");
+// }
 
 // $db->query("drop table if exists user;");
 // $db->query("create table user (
@@ -92,7 +98,7 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
                 <!-- Nav bar that collapses when screen gets small with tabs for each page and login-->
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="index.html">UVA Sports Invitations</a>
+                        <a class="navbar-brand" href="index.php">UVA Sports Invitations</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
