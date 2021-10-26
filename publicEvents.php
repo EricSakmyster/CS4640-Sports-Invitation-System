@@ -108,6 +108,10 @@
                 $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
                 mysqli_select_db($db, $dbdatabase);
                 $invites = mysqli_query($db, "SELECT * FROM invite;");
+                $invites_row = $invites->fetch_all(MYSQLI_ASSOC);
+                header('Content-Type: application/json');
+                $json_invites = json_encode($invites_row); //encoding invites as json
+                header('Content-Type: text/html; charset=UTF-8');
                 foreach ($invites as $invite) { 
               ?>
                 <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
