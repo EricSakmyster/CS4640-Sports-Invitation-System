@@ -4,21 +4,10 @@
     
     // // /** DATABASE SETUP **/
     include("database_credentials.php"); // define variables
-    // $conn = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
     
     $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
-    session_start();
+    session_start(); // Start the session to make the data available to the webpage
+    session_destroy(); // Destroy the data with the current session
+    header("Location: login.php"); // Redirect back to the login page once you log out
 
-    $error_msg = "";
-    session_destroy();
-    header("Location: login.php");
-
-
-    // if(isset($_SESSION["username"])) {
-    //     unset($_SESSION["username"]);
-    //     unset($_SESSION["password"]);
-    // }
-    // else {
-    //     $error_msg = "Didn't log out properly";
-    // }
    ?>

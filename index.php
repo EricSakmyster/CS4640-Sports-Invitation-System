@@ -5,13 +5,13 @@ include("database_credentials.php"); // define variables
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
 
-// $db->query("drop table if exists user;");
+// Creating the user database
 $db->query("create table if not exists user (
     user_id int not null primary key auto_increment,
     username text not null,
     password text not null);");
 
-// $db->query("drop table if exists invite;");
+// Creating the invite database
 $db->query("create table if not exists invite (
     invite_id int not null primary key auto_increment,
     group_name text not null,
@@ -23,14 +23,13 @@ $db->query("create table if not exists invite (
     time text not null,
     date text not null);");
 
-
-// $db->query("drop table if exists invite_users;");
+// Creating the invite_user database
 $db->query("create table if not exists invite_users (
     invite_id int not null,
     user_id int not null,
     status text not null,
     CONSTRAINT PK_invite_users primary key (invite_id,user_id));");
-$db->close();
+$db->close(); //Close the database
 ?>
 
 <!DOCTYPE html>

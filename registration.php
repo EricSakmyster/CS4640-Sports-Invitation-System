@@ -9,10 +9,9 @@ $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
 
 $error_msg = "";
 
-// Check if the user submitted the form (the form in the HTML below
-// submits back to this page, which is okay for now.  We will check for
-// form data and determine whether to re-show this form with a message
-// or to redirect the user to the trivia game.
+// Check if the user submitted the form 
+// Check for form data and determine whether to re-show this form with a message
+
 if (isset($_REQUEST["username"])) { // validate the email coming in
 $stmt = $db->prepare("select * from user where username = ?;");
 $stmt->bind_param("s", $_REQUEST["username"]);
@@ -24,52 +23,26 @@ if (!$stmt->execute()) {
     $data = $res->fetch_all(MYSQLI_ASSOC);
     
     if (!empty($data)) {
-        // user was found!  Send to the game (with a GET parameter containing their email)
-        // header("Location: trivia_question.php?email={$data[0]["email"]}");
-        header("Location: login.php?email={$data[0]["email"]}");
+        // User was found
+        header("Location: login.php?username={$data[0]["username"]}");
         exit();
     } else {
-        // User was not found.  For our game, we'll just insert them!
+        // User was not found
         $insert = $db->prepare("insert into user (username, password) values (?, ?);");
         $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
         $insert->bind_param("ss", $_POST["username"], $password);
         if (!$insert->execute()) {
             $error_msg = "Error creating new user";
         } 
-        // Send them to the game (with a GET parameter containing their email)
-        // header("Location: trivia_question.php?email={$_POST["email"]}");\
-        
-        header("Location: login.php?email={$_POST["username"]}");
+
+        // User was found! Send them to the login page
+        header("Location: login.php?username={$_POST["username"]}");
         exit();
     }
 }
 
 }
 
-// // require('db.php');
-    // // When form submitted, insert values into the database.
-    // if (isset($_REQUEST['username'])) {
-    //     // removes backslashes
-    //     $username = stripslashes($_REQUEST['username']);
-    //     //escapes special characters in a string
-    //     $username = mysqli_real_escape_string($conn, $username);
-    //     $password = stripslashes($_REQUEST['password']);
-    //     $password = mysqli_real_escape_string($conn, $password);
-    //     $query    = "INSERT into `user` (username, password)
-    //                  VALUES ('$username', '" . md5($password) . "')";
-    //     $result   = mysqli_query($conn, $query);
-    //     if ($result) {
-    //         echo "<div class='form'>
-    //               <h3>You are registered successfully.</h3><br/>
-    //               <p class='link'>Click here to <a href='login.php'>Login</a></p>
-    //               </div>";
-    //     } else {
-    //         echo "<div class='form'>
-    //               <h3>Required fields are missing.</h3><br/>
-    //               <p class='link'>Click here to <a href='registration.php'>registration</a> again.</p>
-    //               </div>";
-    //     }
-    // } else {
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +112,7 @@ if (!$stmt->execute()) {
                 <div class="row justify-content-center">
                     <div class="col">
                         <!-- <a href="index.php" class="btn btn-primary btn-sm">Login</a> Login button -->
-                        <input type="submit" value="Login" name="submit" class="login-button"/>
+                        <input type="submit" value="Register" name="submit" class="login-button"/>
                         <p class="link"><a href="registration.php">New Registration</a></p>
                     </div>
                 </div>
@@ -152,43 +125,3 @@ if (!$stmt->execute()) {
         </div>
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Registration</title>
-    <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-    <form class="form" action="" method="post">
-        <h1 class="login-title">Registration</h1>
-        <input type="text" class="login-input" name="username" placeholder="Username" required />
-        <input type="password" class="login-input" name="password" placeholder="Password">
-        <input type="submit" name="submit" value="Register" class="login-button">
-        <p class="link"><a href="login.php">Click to Register</a></p>
-    </form>
-<?php
-    // }
-?>
-</body>
-</html> -->
