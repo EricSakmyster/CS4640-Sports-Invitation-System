@@ -2,13 +2,16 @@
     session_start();
     if($_SESSION["username"] == NULL) {
         header("Location: login.php");
-    }
+    } 
+    // Checks if the time inputted matches an accepted time format
     function isValidTime($time){
         return preg_match("/^(1[0-2]|0[1-9]|[1-9]):[0-5][0-9] (PM|AM|pm|am)+$/", $time);
     }
+    // Checks if the date inputted matches an accepted date format
     function isValidDate($date){
         return preg_match("/^(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])-[0-9][0-9][0-9][0-9]+$/", $date);
     }
+    // Initializes all the error messages possible for each form element
     $sportErr = "";
     $genderErr = "";
     $numPlayersErr="";
@@ -106,7 +109,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
         <meta name="author" content="Eric Sakmyster and Merron Tecleab">
-        <meta name="description" content="Home page of website">
+        <meta name="description" content="Form to create a sports invite">
         <meta name="keywords" content="Eric Merron createinvite">    
     </head>
     <body>
@@ -147,6 +150,7 @@
                             <form action="" method = "post" class="row g-3">
                                 <h1 style="text-align: center; text-decoration: underline;"> Create an Event</h1>
                                 <?php 
+                                    // Creates a success alert if the invite form was valid, or an invalid alert if not
                                     if ($success){
                                 ?>
                                         <div class="alert alert-success" style="text-align:center" role="alert">

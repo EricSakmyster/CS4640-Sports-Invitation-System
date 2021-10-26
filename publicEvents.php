@@ -4,8 +4,9 @@
     header("Location: login.php");
   }
   else {
-    include("database_credentials.php"); // define variables
+    include("database_credentials.php"); 
     $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
+    // Gets user_id of current user using session
     $stmt_user_id = $db->prepare("select user_id from user where username=?");
     $stmt_user_id->bind_param("s", $_SESSION["username"]);
     $stmt_user_id->execute();
@@ -14,22 +15,21 @@
     $stmt_user_id->close();
     $user_id = $rows[0]['user_id'];
     if (!empty($_POST)){
-      include("database_credentials.php"); // define variables
-      $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
       $invite_id = $_POST['invite_id'];
       $status = $_POST['status'];
+      // See if the current user has updated their status for a particular invite or not
       $stmt_check = $db->prepare("select * from invite_users where user_id = ? AND invite_id = ?");
       $stmt_check->bind_param("ii", $user_id, $invite_id);
       $stmt_check->execute();
       $result2 = $stmt_check->get_result();
       $rows2 = $result2->fetch_all(MYSQLI_ASSOC);
       $stmt_check->close();
-      if (empty($rows2)) {
+      if (empty($rows2)) { // If the user doesn't have a status for an invite, make a new entry in db
         $stmt = $db->prepare("insert into invite_users (invite_id, user_id, status) 
         VALUES (?, ?, ?); ");
         $stmt->bind_param("iis", $invite_id, $user_id, $status);
       }
-      else{
+      else{ // If the user does have a status for an invite, update the status in db
         $stmt = $db->prepare("update invite_users set status=? where user_id=? and invite_id=?");
         $stmt->bind_param("sii", $status, $user_id, $invite_id);
       }
@@ -104,6 +104,7 @@
                   <button type="button" class="btn btn-outline-primary">Filter</button> <!--Filter button-->
               </div>
               <?php
+                // Get all invites from database to display in the hub
                 include("database_credentials.php");
                 $db = mysqli_connect($dbserver, $dbuser, $dbpass, $dbdatabase);
                 mysqli_select_db($db, $dbdatabase);
@@ -116,6 +117,7 @@
               ?>
                 <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
                     <?php 
+                    // Gets the current user's status for a particular invite to display its
                     $user_status = mysqli_query($db, "SELECT status FROM invite_users;");
                     $status_check = $db->prepare("select status from invite_users where user_id = ? AND invite_id = ?");
                     $status_check->bind_param("ii", $user_id, $invite['invite_id']);
@@ -163,6 +165,7 @@
                       <p class="card-text"><?php echo $invite['time'], " ", $invite['date']; ?></p> <!--Date/Time of event-->
                       <p class="card-text"><?php echo $invite['description']; ?></p> <!-- description of event -->
                       <?php
+                        //Get how many users have said they are going to a particular invite
                         $num_check = $db->prepare("select COUNT(*) AS count from invite_users where invite_id = ? and status = 'Going'");
                         $num_check->bind_param("i",$invite['invite_id']);
                         $num_check->execute();
