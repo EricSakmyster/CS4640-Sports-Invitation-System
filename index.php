@@ -5,7 +5,7 @@
 // // /** DATABASE SETUP **/
 include("database_credentials.php"); // define variables
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-$db = new mysqli($dbserver, $dbuser, $dbpass);
+$db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
 
 $cd = "create database if not exists ems5fa";
 if ($db->query($cd) === TRUE) {
@@ -14,12 +14,14 @@ if ($db->query($cd) === TRUE) {
   echo "Error creating database: " . $cd->error;
 }
 // Creating the user database
+// $db->query("drop table if exists user;");
 $db->query("create table if not exists user (
     user_id int not null primary key auto_increment,
     username text not null,
     password text not null);");
 
 // Creating the invite database
+// $db->query("drop table if exists invite;");
 $db->query("create table if not exists invite (
     invite_id int not null primary key auto_increment,
     group_name text not null,
@@ -32,6 +34,7 @@ $db->query("create table if not exists invite (
     date text not null);");
 
 // Creating the invite_user database
+// $db->query("drop table if exists invite_users;");
 $db->query("create table if not exists invite_users (
     invite_id int not null,
     user_id int not null,
