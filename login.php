@@ -1,3 +1,4 @@
+<!-- Source: https://www.tutorialspoint.com/stop-making-form-to-reload-a-page-in-javascript -->
 <?php
     
 
@@ -107,7 +108,8 @@ if (isset($_POST["username"])) { // validate the email coming in
                         <label for="usr">Username:</label>
                     </div>
                     <div class="col-2">
-                        <input type="text" class="login-input" name="username" placeholder="Username" autofocus="true"/>
+                        <input type="text" class="login-input" name="username" placeholder="Username" autofocus="true" id="inputUsername"/>
+                        <div id=userHelp class="form-text" style="color:red"></div>
                         <!-- <input type="text" class="form-control" id="usr"> input field -->
                     </div>
                 </div>
@@ -116,7 +118,8 @@ if (isset($_POST["username"])) { // validate the email coming in
                         <label for="pwd">Password:</label>
                     </div>
                     <div class="col-2">
-                        <input type="password" class="login-input" name="password" placeholder="Password"/>
+                        <input type="password" class="login-input" name="password" placeholder="Password" id="inputPassword"/>
+                        <div id=passHelp class="form-text" style="color:red"></div>
                         <!-- <input type="password" class="form-control" id="pwd"> input field -->
                     </div>
                 </div>
@@ -134,7 +137,8 @@ if (isset($_POST["username"])) { // validate the email coming in
                 <div class="row justify-content-center">
                     <div class="col-4">
                         <!-- <a href="index.php" class="btn btn-primary btn-sm">Login</a> Login button -->
-                        <input type="submit" value="Login" name="submit" class="login-button"/>
+                        <input type="submit" value="Login" name="submit" class="login-button" onclick="loginUser();"/>
+                        <!-- <a href="#" id="login" onclick="loginUser();">Login</a> -->
                         <p class="link"><a href="registration.php">New user?</a></p>
                     </div>
                 </div>
@@ -145,5 +149,125 @@ if (isset($_POST["username"])) { // validate the email coming in
                 </div>
             </form>
         </div>
+
+
+
+        <script type="text/javascript">
+
+
+            let verifyUsername = () => { //arrow function
+                let username = document.getElementById("inputUsername").value;
+
+                if(username.length >= 5 && username.length <= 10) {
+                    return true;
+                }
+
+                alert("Username error!");
+                return false;
+            }
+
+            function userErrType() {
+                var username = document.getElementById("inputPassword").value;
+
+                if(username.length >= 5 && username.length <= 10) {
+                    return true;
+                }
+
+                document.getElementById("userHelp").innerHTML = "Enter a username between 5-10 letters";
+            }
+
+            let verifyPassword = function() { //anonymous function
+                var password = document.getElementById("inputPassword").value;
+                // console.log(password);
+                var isUpper = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toUpperCase()) {
+                        isUpper = true;
+                        break;
+                    }
+                }
+
+                var isLower = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toLowerCase()) {
+                        isLower = true;
+                        break;
+                    }
+                }
+
+                if(password.length > 5 && password.length < 10 && isUpper == true && isLower == true) {
+                    return true;
+                }
+                alert("Password error!");
+
+                return false;
+            }
+
+            function passErrType() {
+                var password = document.getElementById("inputPassword").value;
+                
+                console.log(password[0]);
+                var isUpper = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toUpperCase()) {
+                        isUpper = true;
+                        break;
+                    }
+                }
+
+                var isLower = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toLowerCase()) {
+                        isLower = true;
+                        break;
+                    }
+                }
+
+                if(password.length >= 5 && password.length <= 10 && isUpper == true && isLower == true) {
+                    return true;
+                }
+                
+                else if(password.length < 5 || password.length > 10) {
+                    document.getElementById("passHelp").innerHTML = "Enter a password between 5-10 letters";
+                }
+
+                else if(isUpper == false) {
+                    document.getElementById("passHelp").innerHTML = "Include at least one upper case letter";
+                }
+
+                else if(isLower == false) {
+                    document.getElementById("passHelp").innerHTML = "Include at least one lower case letter";
+                }
+
+
+            }
+
+
+            function loginUser() {
+                var username = document.getElementById("inputUsername").value;
+                var password = document.getElementById("inputPassword").value;
+
+                var isValidName = verifyUsername();
+                var isValidPassword = verifyPassword();
+                if(isValidName == true && isValidPassword == true) {
+                    window.location.href = "index.php";
+                    return true;
+                }
+
+                // document.getElementById("login").addEventListener("click", event.preventDefault());
+                event.preventDefault();
+
+                userErrType();
+                passErrType();
+
+                return false;
+            }
+
+
+            </script>
     </body>
 </html>

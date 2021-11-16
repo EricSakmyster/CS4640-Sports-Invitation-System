@@ -1,4 +1,5 @@
-
+<!-- Source: https://www.tutorialspoint.com/javascript/javascript_page_redirect.htm -->
+<!-- Source: https://www.tutorialspoint.com/stop-making-form-to-reload-a-page-in-javascript -->
 
 <?php
 
@@ -112,8 +113,9 @@ if (!$stmt->execute()) {
                 <div class="row justify-content-center">
                     <div class="col">
                         <!-- <a href="index.php" class="btn btn-primary btn-sm">Login</a> Login button -->
-                        <input type="submit" value="Register" name="submit" class="login-button"/>
-                        <p class="link"><a href="registration.php">New Registration</a></p>
+                        <input type="submit" value="Register" name="submit" class="login-button" id="login" onclick="addAccount();"/>
+                        <!-- <a href="#" id="login" onclick="addAccount();">Register</a> -->
+                        <!-- <p class="link"><a href="registration.php">New Registration</a></p> -->
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -123,5 +125,128 @@ if (!$stmt->execute()) {
                 </div>
             </form>
         </div>
+
+
+        <script type="text/javascript">
+
+
+            let verifyUsername = () => { //arrow function
+                let username = document.getElementById("inputUsername").value;
+
+                if(username.length >= 5 && username.length <= 10) {
+                    return true;
+                }
+
+                alert("Username error!");
+                return false;
+            }
+
+            function userErrType() {
+                var username = document.getElementById("inputPassword").value;
+
+                if(username.length >= 5 && username.length <= 10) {
+                    return true;
+                }
+
+                document.getElementById("userHelp").innerHTML = "Enter a username between 5-10 letters";
+            }
+
+            let verifyPassword = function() { //anonymous function
+                var password = document.getElementById("inputPassword").value;
+                
+                console.log(password[0]);
+                var isUpper = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toUpperCase()) {
+                        isUpper = true;
+                        break;
+                    }
+                }
+
+                var isLower = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toLowerCase()) {
+                        isLower = true;
+                        break;
+                    }
+                }
+
+                if(password.length > 5 && password.length < 10 && isUpper == true && isLower == true) {
+                    return true;
+                }
+                alert("Password error!");
+
+                return false;
+            }
+
+            function passErrType() {
+                var password = document.getElementById("inputPassword").value;
+                
+                console.log(password[0]);
+                var isUpper = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toUpperCase()) {
+                        isUpper = true;
+                        break;
+                    }
+                }
+
+                var isLower = false;
+                for (let i = 0; i < password.length; i++) {
+                    var temp = password.charAt(i);
+                    if(temp == temp.toLowerCase()) {
+                        isLower = true;
+                        break;
+                    }
+                }
+
+                if(password.length >= 5 && password.length <= 10 && isUpper == true && isLower == true) {
+                    return true;
+                }
+                
+                else if(password.length < 5 || password.length > 10) {
+                    document.getElementById("passHelp").innerHTML = "Enter a password between 5-10 letters";
+                }
+
+                else if(isUpper == false) {
+                    document.getElementById("passHelp").innerHTML = "Include at least one upper case letter";
+                }
+
+                else if(isLower == false) {
+                    document.getElementById("passHelp").innerHTML = "Include at least one lower case letter";
+                }
+
+
+            }
+
+
+            function addAccount() {
+                // alert("Hi");
+            
+                var isValidName = verifyUsername();
+                var isValidPassword = verifyPassword();
+                console.log(isValidName);
+                console.log(isValidPassword);
+                if(isValidName == true && isValidPassword == true) {
+                    window.location.href = "login.php";
+                    return true;
+                }
+
+                // document.getElementById("login").addEventListener("click", event.preventDefault());
+                event.preventDefault();
+
+                userErrType();
+                passErrType();
+
+                return false;
+            }
+
+
+        </script>
+
+
     </body>
 </html>
