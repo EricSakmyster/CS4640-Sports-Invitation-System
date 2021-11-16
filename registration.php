@@ -1,5 +1,6 @@
-
 <!-- Source: https://www.tutorialspoint.com/javascript/javascript_page_redirect.htm -->
+<!-- Source: https://www.tutorialspoint.com/stop-making-form-to-reload-a-page-in-javascript -->
+
 <?php
 
 // /** DATABASE SETUP **/
@@ -114,8 +115,8 @@ if (!$stmt->execute()) {
                 <div class="row justify-content-center">
                     <div class="col">
                         <!-- <a href="index.php" class="btn btn-primary btn-sm">Login</a> Login button -->
-                        <!-- <input type="submit" value="Register" name="submit" class="login-button" id="login" onclick="addAccount();"/> -->
-                        <a href="#" id="login" onclick="addAccount();">Register</a>
+                        <input type="submit" value="Register" name="submit" class="login-button" id="login" onclick="addAccount();"/>
+                        <!-- <a href="#" id="login" onclick="addAccount();">Register</a> -->
                         <!-- <p class="link"><a href="registration.php">New Registration</a></p> -->
                     </div>
                 </div>
@@ -236,60 +237,15 @@ if (!$stmt->execute()) {
                     return true;
                 }
 
-                    userErrType();
-                    passErrType();
-                    // window.location.href = "registration.php";
+                // document.getElementById("login").addEventListener("click", event.preventDefault());
+                event.preventDefault();
+
+                userErrType();
+                passErrType();
 
                 return false;
             }
 
-            function saveErrMessage() {
-                var password = document.getElementById("inputPassword").value;
-                
-
-
-                // var isUpper = false;
-                // for (let i = 0; i < password.length; i++) {
-                //     var temp = password.charAt(i);
-                //     if(temp == temp.toUpperCase()) {
-                //         isUpper = true;
-                //         break;
-                //     }
-                // }
-
-                // var isLower = false;
-                // for (let i = 0; i < password.length; i++) {
-                //     var temp = password.charAt(i);
-                //     if(temp == temp.toLowerCase()) {
-                //         isLower = true;
-                //         break;
-                //     }
-                // }
-
-                // if(isUpper == true && isLower == true) {
-                //     return true;
-                // }
-
-                // if(password.length > 5 && password.length < 10 && isUpper == true && isLower == true) {
-                //     return true;
-                // }
-
-                // if(password.length <= 5 || password.length >= 10) {
-                //     document.getElementById("passHelp").innerHTML = "Enter a password between 5-10 letters";
-                //     localStorage.setItem("passHelp", "Enter a password between 5-10 letters");
-                // }
-
-                // else if(isUpper == false) {
-                //     alert("Include at least one upper case letter");
-                // }
-
-                // else if(isLower == false) {
-                //     alert("Include at least one lower case letter");
-                // }
-
-            }
-
-            
 
         </script>
 
