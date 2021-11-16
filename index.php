@@ -7,7 +7,7 @@ include("database_credentials.php"); // define variables
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
 
-$cd = "create database if not exists ems5fa";
+$cd = "create database if not exists test";
 if ($db->query($cd) === TRUE) {
   echo "Database created";
 } else {
