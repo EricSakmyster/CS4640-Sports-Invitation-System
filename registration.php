@@ -97,7 +97,8 @@ if (!$stmt->execute()) {
                         <label for="usr">New Username:</label>
                     </div>
                     <div class="col-2">
-                        <input type="text" class="login-input" name="username" placeholder="Username" autofocus="true"/>
+                    <input type="text" class="login-input" name="username" placeholder="Username" autofocus="true" id="inputUsername"/>
+                        <div id=userHelp class="form-text" style="color:red"></div>
                         <!-- <input type="text" class="form-control" id="usr"> input field -->
                     </div>
                 </div>
@@ -106,7 +107,8 @@ if (!$stmt->execute()) {
                         <label for="pwd">New Password:</label>
                     </div>
                     <div class="col-2">
-                        <input type="password" class="login-input" name="password" placeholder="Password"/>
+                    <input type="password" class="login-input" name="password" placeholder="Password" id="inputPassword"/>
+                        <div id=passHelp class="form-text" style="color:red"></div>
                         <!-- <input type="password" class="form-control" id="pwd"> input field -->
                     </div>
                 </div>
