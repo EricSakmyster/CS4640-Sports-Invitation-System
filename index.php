@@ -62,6 +62,16 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
         <meta name="keywords" content="Eric Merron Home">    
     </head>
     <body>
+
+    <?php
+        session_start();
+        if($_SESSION["username"] == NULL) {
+            echo '<script type="text/javascript">
+                alert("You are not logged in");
+            </script>';
+            }
+        ?>
+
         <div id='header-footer-container'>
             <header>
                 <!-- Nav bar that collapses when screen gets small with tabs for each page and login-->
