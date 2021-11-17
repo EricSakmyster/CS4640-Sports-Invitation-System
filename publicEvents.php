@@ -210,6 +210,7 @@
         </footer>
       </div>
       <script>
+        // If the user accepts an invite, an alert will pop up saying it will now show in the Your Events tab
         function statusMessage(){
           alert("Accepted invite will show in the Your Events tab.")
         }

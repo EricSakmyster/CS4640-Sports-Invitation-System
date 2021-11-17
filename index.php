@@ -3,6 +3,7 @@
 
 // Sources: https://www.quora.com/How-can-I-continue-a-session-through-PHP-pages-after-I-login
 // // /** DATABASE SETUP **/
+session_start();
 include("database_credentials.php"); // define variables
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $db = new mysqli($dbserver, $dbuser, $dbpass, $dbdatabase);
@@ -44,6 +45,7 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
         <link rel="stylesheet" href="main.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
@@ -53,16 +55,6 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
         <meta name="keywords" content="Eric Merron Home">    
     </head>
     <body>
-
-    <?php
-        session_start();
-        if($_SESSION["username"] == NULL) {
-            echo '<script type="text/javascript">
-                alert("You are not logged in");
-            </script>';
-            }
-        ?>
-
         <div id='header-footer-container'>
             <header>
                 <!-- Nav bar that collapses when screen gets small with tabs for each page and login-->
@@ -96,10 +88,10 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
             <div id='body'>
                 <div class = 'container'>
                     <div class='row'>
-                        <div class = 'col-6'>
+                        <div class = 'col-6' id = "left-column" >
                             <!-- Description of website purpose-->
                             <section>
-                                <div class="card">
+                                <div class="card" style = "margin-bottom: 20px;">
                                     <div class="card-body">
                                         <h1 class="card-title">Looking for a pickup game?</h1>
                                         <p class="card-text">This webpage strives to connect UVA students with the sports they want to play and get the number of players needed.</p>
@@ -156,5 +148,26 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
                 </nav>
             </footer>
         </div>
+        <script>
+            // If user isn't logged in, will show this card
+            function addLoginCard() {
+                $('#left-column').append("<section>" + 
+                "<div class='card'>" + 
+                    "<div class='card-body'>" + 
+                        "<h1 class='card-title'>Join Us</h1>" + 
+                        "<p class='card-text'>Register or login to access all features!</p>" + 
+                        "<a class='btn btn-primary btn-md' id= 'login' href='login.php' role='button'>Login</a>" + 
+                    "</div>" + 
+                "</div>" + 
+                "</section>");
+            }   
+        </script>
+        <?php
+            if(!isset($_SESSION["username"])) {
+                echo "<script type='text/javascript'>
+                addLoginCard();
+                </script>";
+            }
+        ?>
     </body>
 </html>

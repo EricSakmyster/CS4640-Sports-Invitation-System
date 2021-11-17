@@ -275,6 +275,7 @@
             </footer>
         </div>
         <script>
+            // Check if any of the user's other accepted invites conflict with their inputted date
             $("#checkConflicts").click(function (){
                 $.ajax({
                   async : true,

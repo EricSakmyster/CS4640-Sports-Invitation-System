@@ -108,6 +108,7 @@
         </footer>
       </div>
       <script>
+          // JS object for an accepted invite with the desired fields
           function AcceptedInvite(invite_id, gender, sport, location, time, date, description){
               this.invite_id = invite_id;
               this.gender = gender;
@@ -117,6 +118,7 @@
               this.date = date;
               this.description = description;
           }
+          // When the document is ready, this ajax query will get all the users accepted invites and display them on the DOM
           $(document).ready(function(){
               $.ajax({
                   async : true,
@@ -125,6 +127,7 @@
                   dataType: 'JSON',
                   success: function(response){
                       var responseLength = response.length;
+                      // If no accepted invites exist, display an alert that shows they need to accept somes
                       if (!responseLength){
                           var noInvitesStr = "<div class='alert alert-primary' role='alert'>" + "You have no accepted invites. Go accept some in the " +  "<a href='publicEvents.php' class='alert-link'>" + "public events" + "</a>" + " tab."+ "</div>";
                           $("#container-invitation").append(noInvitesStr);
@@ -145,7 +148,8 @@
                   }
               });
           });
-
+          // If the user clicks they don't want to come to an accepted invite anymore, the database will be updated
+          // and the card will be deleted from the DOM
           function updateInvites(id){
             $.ajax({
                   async : true,
