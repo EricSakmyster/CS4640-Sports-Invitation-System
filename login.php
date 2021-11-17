@@ -93,10 +93,13 @@ if (isset($_POST["username"])) { // validate the email coming in
         <div class="container" id="container-login">
             <h1>Welcome to UVA Sports Invitations</h1>
             <form class="form" method="post" name="login">
-                <div class="row justify-content-center" style="margin-bottom: 5px; margin-top:200px;"> <!--Username field-->
+                <div class="row justify-content-center" style="margin-bottom: 5px; margin-top:200px;" id="user"> <!--Username field-->
                     <?php 
                         if (isset($_GET["username"])) {
-                            echo "Registration success for " . $_GET["username"];
+                            echo " " . '<script type="text/javascript">
+                                        var nameField = document.getElementById("user");
+                                        nameField.style.color = "orange";
+                                    </script>'   . "Registration success for " . $_GET["username"];
                         }
                         if (isset($_GET['loggedout'])){
                             echo "You've been logged out.";
@@ -110,7 +113,6 @@ if (isset($_POST["username"])) { // validate the email coming in
                     <div class="col-2">
                         <input type="text" class="login-input" name="username" placeholder="Username" autofocus="true" id="inputUsername"/>
                         <div id=userHelp class="form-text" style="color:red"></div>
-                        <!-- <input type="text" class="form-control" id="usr"> input field -->
                     </div>
                 </div>
                 <div class="row justify-content-center"> <!--Password field-->
@@ -120,7 +122,6 @@ if (isset($_POST["username"])) { // validate the email coming in
                     <div class="col-2">
                         <input type="password" class="login-input" name="password" placeholder="Password" id="inputPassword"/>
                         <div id=passHelp class="form-text" style="color:red"></div>
-                        <!-- <input type="password" class="form-control" id="pwd"> input field -->
                     </div>
                 </div>
                 <?php if (! empty($usernameErr) || ! empty($passwordErr)){
@@ -151,14 +152,13 @@ if (isset($_POST["username"])) { // validate the email coming in
         </div>
 
 
-
         <script type="text/javascript">
 
 
             let verifyUsername = () => { //arrow function
                 let username = document.getElementById("inputUsername").value;
 
-                if(username.length >= 5 && username.length <= 10) {
+                if(username.length >= 5 && username.length <= 10) { // Returns true if the username field is within 5-10 letters
                     return true;
                 }
 
@@ -167,9 +167,9 @@ if (isset($_POST["username"])) { // validate the email coming in
             }
 
             function userErrType() {
-                var username = document.getElementById("inputPassword").value;
+                var username = document.getElementById("inputUsername").value;
 
-                if(username.length >= 5 && username.length <= 10) {
+                if(username.length >= 5 && username.length <= 10) { // Returns true if the username field is within 5-10 letters
                     return true;
                 }
 
@@ -178,9 +178,9 @@ if (isset($_POST["username"])) { // validate the email coming in
 
             let verifyPassword = function() { //anonymous function
                 var password = document.getElementById("inputPassword").value;
-                // console.log(password);
+                
                 var isUpper = false;
-                for (let i = 0; i < password.length; i++) {
+                for (let i = 0; i < password.length; i++) { // Check if any upper case letters exist in the input
                     var temp = password.charAt(i);
                     if(temp == temp.toUpperCase()) {
                         isUpper = true;
@@ -189,7 +189,7 @@ if (isset($_POST["username"])) { // validate the email coming in
                 }
 
                 var isLower = false;
-                for (let i = 0; i < password.length; i++) {
+                for (let i = 0; i < password.length; i++) { // Check if any lower case letters exist in the input
                     var temp = password.charAt(i);
                     if(temp == temp.toLowerCase()) {
                         isLower = true;
@@ -197,7 +197,7 @@ if (isset($_POST["username"])) { // validate the email coming in
                     }
                 }
 
-                if(password.length > 5 && password.length < 10 && isUpper == true && isLower == true) {
+                if(password.length >= 5 && password.length <= 10 && isUpper == true && isLower == true) {
                     return true;
                 }
                 alert("Password error!");
@@ -208,9 +208,8 @@ if (isset($_POST["username"])) { // validate the email coming in
             function passErrType() {
                 var password = document.getElementById("inputPassword").value;
                 
-                console.log(password[0]);
                 var isUpper = false;
-                for (let i = 0; i < password.length; i++) {
+                for (let i = 0; i < password.length; i++) { // Check if any upper case letters exist in the input
                     var temp = password.charAt(i);
                     if(temp == temp.toUpperCase()) {
                         isUpper = true;
@@ -219,7 +218,7 @@ if (isset($_POST["username"])) { // validate the email coming in
                 }
 
                 var isLower = false;
-                for (let i = 0; i < password.length; i++) {
+                for (let i = 0; i < password.length; i++) { // Check if any lower case letters exist in the input
                     var temp = password.charAt(i);
                     if(temp == temp.toLowerCase()) {
                         isLower = true;
@@ -231,15 +230,15 @@ if (isset($_POST["username"])) { // validate the email coming in
                     return true;
                 }
                 
-                else if(password.length < 5 || password.length > 10) {
+                else if(password.length < 5 || password.length > 10) { // If the password is out of the 5-10 letter range
                     document.getElementById("passHelp").innerHTML = "Enter a password between 5-10 letters";
                 }
 
-                else if(isUpper == false) {
+                else if(isUpper == false) { // If the password does not have any upper case letters
                     document.getElementById("passHelp").innerHTML = "Include at least one upper case letter";
                 }
 
-                else if(isLower == false) {
+                else if(isLower == false) { // If the password does not have any lower case letters
                     document.getElementById("passHelp").innerHTML = "Include at least one lower case letter";
                 }
 
@@ -248,23 +247,35 @@ if (isset($_POST["username"])) { // validate the email coming in
 
 
             function loginUser() {
-                var username = document.getElementById("inputUsername").value;
-                var password = document.getElementById("inputPassword").value;
-
                 var isValidName = verifyUsername();
                 var isValidPassword = verifyPassword();
-                if(isValidName == true && isValidPassword == true) {
-                    window.location.href = "index.php";
+                
+                if(isValidName == true && isValidPassword == true) { // If the username and the password are typed in properly
+                    window.location.href = "login.php";
                     return true;
                 }
 
-                // document.getElementById("login").addEventListener("click", event.preventDefault());
-                event.preventDefault();
+                else if(isValidName == true && isValidPassword == false) { // If the username is typed in properly
+                    event.preventDefault(); // Stops the page from logging in
+                    passErrType(); // Display the password error message
+                    document.getElementById("userHelp").innerHTML = "";
+                    return false;
+                }
 
-                userErrType();
-                passErrType();
+                else if(isValidName == false && isValidPassword == true) { // If the password is typed in properly
+                    event.preventDefault(); // Stops the page from logging in
+                    userErrType(); // Display the username error message
+                    document.getElementById("passHelp").innerHTML = "";
+                    return false;
+                }
 
-                return false;
+                else { // If both the username and the password isn't typed in properly
+                    userErrType(); // Display the username error message
+                    passErrType(); // Display the password error message
+                    event.preventDefault(); // Stops the page from logging in
+                    return false;
+                }
+                
             }
 
 
