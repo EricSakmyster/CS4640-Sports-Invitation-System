@@ -74,7 +74,7 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
                                     <a class="nav-link" href="createEvent.php">Create Event</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">User Search</a>
+                                    <a class="nav-link" href="invitations.php">Your Events</a>
                                 </li>
                             </ul>
                         </div>
@@ -142,7 +142,7 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
                     </a> |
                     <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
                     </a> |
-                    <a class="btn btn-primary btn-sm" href="#" role="button">User Search</a>
+                    <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a>
                 </nav>
             </footer>
         </div>

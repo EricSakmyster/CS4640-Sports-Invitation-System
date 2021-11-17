@@ -80,7 +80,7 @@
                               <a class="nav-link" href="createEvent.php">Create Event</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link" href="#">User Search</a>
+                              <a class="nav-link" href="invitations.php">Your Events</a>
                           </li>
                       </ul>
                   </div>
@@ -90,12 +90,14 @@
         </header>
         <div id='body'>
           <h1 style="text-align: center; font-size: 70px;">Public Events Hub</h1>
+          <div class="container" id = "filter-container" style = "margin-top: 100px; text-align: center;">
+            <div class="input-group">
+                    <input type="search" class="form-control rounded" style="margin-right: 5px;" placeholder="Search" aria-label="Search"/><!--Search bar-->
+                    <button type="button" class="btn btn-outline-primary">Search</button> <!--Search button-->
+                    <button type="button" class="btn btn-outline-primary">Filter</button> <!--Filter button-->
+            </div>
+          </div>  
           <div class="container" id="container-invitation">
-              <div class="input-group">
-                  <input type="search" class="form-control rounded" style="margin-right: 5px;" placeholder="Search" aria-label="Search"/><!--Search bar-->
-                  <button type="button" class="btn btn-outline-primary">Search</button> <!--Search button-->
-                  <button type="button" class="btn btn-outline-primary">Filter</button> <!--Filter button-->
-              </div>
               <?php
                 // Get all invites from database to display in the hub
                 include("database_credentials.php");
@@ -103,9 +105,6 @@
                 mysqli_select_db($db, $dbdatabase);
                 $invites = mysqli_query($db, "SELECT * FROM invite;");
                 $invites_row = $invites->fetch_all(MYSQLI_ASSOC);
-                header('Content-Type: application/json');
-                $json_invites = json_encode($invites_row); //encoding invites as json
-                header('Content-Type: text/html; charset=UTF-8');
                 foreach ($invites as $invite) { 
               ?>
                 <div class="card text-center" id="card-invitation" style="border: 5px solid black;">
@@ -182,12 +181,12 @@
                           }
                           else{
                         ?>
-                            <button type="submit" name="status" value="Going" class="btn btn-primary">Going</a> <!--Going button-->
+                            <button type="submit" name="status" value="Going" class="btn btn-primary" onclick= "statusMessage()">Going</a> <!--Going button-->
                         <?php
                           }
                         ?>
                         <button type="submit" name="status" value="Unsure" class="btn btn-warning">Unsure</a> <!--Unsure button-->
-                        <button type="submit" name="status" value="Not Going" class="btn btn-danger">Not going</a> <!--Not going button-->
+                        <button type="submit" name="status" value="Not Going" class="btn btn-danger" >Not going</a> <!--Not going button-->
                       </form>
                     </div>
                 </div>
@@ -206,9 +205,14 @@
               </a> |
               <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
               </a> |
-              <a class="btn btn-primary btn-sm" href="#" role="button">User Search</a>
+              <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a>
           </nav>
         </footer>
       </div>
+      <script>
+        function statusMessage(){
+          alert("Accepted invite will show in the Your Events tab.")
+        }
+      </script>
     </body>
 </html>

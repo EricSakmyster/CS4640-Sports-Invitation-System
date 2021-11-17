@@ -135,7 +135,7 @@
                                     <a class="nav-link" style = "border-bottom: 3px solid rgb(47, 120, 255);" aria-current="page" href="createEvent.php">Create Event</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">User Search</a>
+                                    <a class="nav-link" href="invitations.php">Your Events</a>
                                 </li>
                             </ul>
                         </div>
@@ -254,6 +254,7 @@
                                 <!-- When this button gets pressed, the invitation would then be put in the Hub -->
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Post</button>
+                                    <button type="button" id= "checkConflicts" class="btn btn-secondary">Check Conflicts</button>
                                 </div>
                             </form>
                         </div>
@@ -269,9 +270,42 @@
                     </a> |
                     <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
                     </a> |
-                    <a class="btn btn-primary btn-sm" href="#" role="button">User Search</a>
+                    <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a>
                 </nav>
             </footer>
         </div>
+        <script>
+            $("#checkConflicts").click(function (){
+                $.ajax({
+                  async : true,
+                  url:'invites.php',
+                  type: 'get',
+                  dataType: 'JSON',
+                  success: function(response){
+                    var responseLength = response.length;
+                    var dateConflicts = 0;
+                    if (document.getElementById('date').value == ""){
+                        alert("No date field inputted.")
+                    }
+                    else if (!responseLength){
+                        alert("This event has no date conflicts with your other accepted invites.");
+                    }
+                    else{
+                        for(var i =0; i<responseLength; i++){
+                            if(response[i].date == document.getElementById('date').value){
+                                dateConflicts++;
+                            }
+                        }
+                        if (dateConflicts){
+                            alert("This event conflicts with " + dateConflicts + " of your accepted events.");
+                        }
+                        else{
+                            alert("This event has no date conflicts with your other accepted invites.");
+                        }
+                    }
+                  }
+                });
+            });
+        </script>
     </body>
 </html>
