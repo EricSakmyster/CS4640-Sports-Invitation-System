@@ -83,6 +83,9 @@
                           <li class="nav-item">
                               <a class="nav-link" style = "border-bottom: 3px solid rgb(47, 120, 255);" aria-current="page" href="invitations.php">Your Events</a>
                           </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="userInvites.html">User Accepted Events</a>
+                          </li>
                       </ul>
                   </div>
                   <a class="btn btn-primary btn-md" id= "logout" href="logout.php" role="button">Logout</a>
@@ -103,7 +106,8 @@
               </a> |
               <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
               </a> |
-              <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a>
+              <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a> |
+              <a class="btn btn-primary btn-sm" href="userInvites.html" role="button">User Accepted Events</a>
           </nav>
         </footer>
       </div>

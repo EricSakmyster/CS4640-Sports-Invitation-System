@@ -1,5 +1,5 @@
 <?php
-// URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System-Sprint-4
+// URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System-Sprint-5
 
 // Sources: https://www.quora.com/How-can-I-continue-a-session-through-PHP-pages-after-I-login
 // // /** DATABASE SETUP **/
@@ -78,6 +78,9 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
                                 <li class="nav-item">
                                     <a class="nav-link" href="invitations.php">Your Events</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="userInvites.html">User Accepted Events</a>
+                                </li>
                             </ul>
                         </div>
                         <a class="btn btn-primary btn-md" id= "login" href="login.php" role="button">Login</a>
@@ -144,7 +147,8 @@ URL: https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System
                     </a> |
                     <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
                     </a> |
-                    <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a>
+                    <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a> |
+                    <a class="btn btn-primary btn-sm" href="userInvites.html" role="button">User Accepted Events</a>
                 </nav>
             </footer>
         </div>

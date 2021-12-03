@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <title>User-Accepted Invitations</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="author" content="Eric Sakmyster and Merron Tecleab">
+        <meta name="description" content="User Accepted Invitations">
+        <meta name="keywords" content="Merron Eric user accepted invitations">
+    </head>
+
+    <body>
+      <div id='header-footer-container'>
+        <header>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+              <div class="container-fluid">
+                  <a class="navbar-brand" href="index.php">UVA Sports Invitations</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                      <ul class="navbar-nav">
+                          <li class="nav-item active">
+                              <a class="nav-link" href="index.php">Home</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="publicEvents.php">Public Events</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="createEvent.php">Create Event</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="invitations.php">Your Events</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" style = "border-bottom: 3px solid rgb(47, 120, 255);" aria-current="page" href="userInvites.html">User Accepted Events</a>
+                        </li>
+                      </ul>
+                  </div>
+                  <a class="btn btn-primary btn-md" id= "logout" href="logout.php" role="button">Logout</a>
+              </div>
+          </nav>
+        </header>
+        <div id='body'>
+          <h1 style="text-align: center; font-size: 70px;">User Accepted Invitations</h1>
+          <div class="container" id="container-invitation">
+            <app-root></app-root>
+          </div>
+        </div>
+        <footer class = 'primary-footer'>
+          <nav class = 'footer-nav' style= "margin-top: 10px;">
+              <a class="btn btn-primary btn-sm" href="index.php" role="button">Home
+              </a> |
+              <a class="btn btn-primary btn-sm" href="publicEvents.php" role="button">Public Events
+                  <span class="badge bg-secondary">0</span>
+              </a> |
+              <a class="btn btn-primary btn-sm" href="createEvent.php" role="button">Create Event
+              </a> |
+              <a class="btn btn-primary btn-sm" href="invitations.php" role="button">Your Events</a> |
+              <a class="btn btn-primary btn-sm" href="userInvites.html" role="button">User Accepted Events</a>
+          </nav>
+        </footer>
+      </div>
+    </body>
+</html>
+
+
+

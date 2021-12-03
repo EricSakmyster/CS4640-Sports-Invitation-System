@@ -1,130 +1,54 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit} from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+// Authors: Eric Sakmyster and Merron Tecleab
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  // title = 'firstOne';
+export class InvitationComponent implements OnInit{
+  // Invites will contain all the invites in the database
+  invites: any = [];
+  // Usernames will contain all user_ids of users who accepted particular invites
+  usernames: any = [];
+  // Fields for binding
+  class = "alert alert-primary";
+  border_style: string = "5px solid black";
+  padding_style: string = "10px";
+  margin_top_style: string = "50px";
+  error = "";
+  constructor ( private http: HttpClient ) {
+  }
 
-  // verifyUsername() : boolean { //arrow function
-  //     let username = document.getElementById("inputUsername").value;
+  ngOnInit (){
+    this.getInvitesAndUsernames();
+  }
+ 
 
-  //     if(username.length >= 5 && username.length <= 10) { // Returns true if the username field is within 5-10 letters
-  //         return true;
-  //     }
-
-  //     alert("Username error!");
-  //     return false;
-  // }
-
-  // userErrType() : boolean {
-  //     var username = document.getElementById("inputUsername").value;
-
-  //     if(username.length >= 5 && username.length <= 10) { // Returns true if the username field is within 5-10 letters
-  //         return true;
-  //     }
-
-  //     document.getElementById("userHelp").innerHTML = "Enter a username between 5-10 letters";
-  //     return false;
-  // }
-
-  // verifyPassword() : boolean { //anonymous function
-  //     var password = document.getElementById("inputPassword").value;
-      
-  //     var isUpper = false;
-  //     for (let i = 0; i < password.length; i++) { // Check if any upper case letters exist in the input
-  //         var temp = password.charAt(i);
-  //         if(temp == temp.toUpperCase()) {
-  //             isUpper = true;
-  //             break;
-  //         }
-  //     }
-
-  //     var isLower = false;
-  //     for (let i = 0; i < password.length; i++) { // Check if any lower case letters exist in the input
-  //         var temp = password.charAt(i);
-  //         if(temp == temp.toLowerCase()) {
-  //             isLower = true;
-  //             break;
-  //         }
-  //     }
-
-  //     if(password.length >= 5 && password.length <= 10 && isUpper == true && isLower == true) {
-  //         return true;
-  //     }
-  //     alert("Password error!");
-
-  //     return false;
-  // }
-
-  // passErrType() : void {
-  //     var password = document.getElementById("inputPassword").value;
-      
-  //     var isUpper = false;
-  //     for (let i = 0; i < password.length; i++) { // Check if any upper case letters exist in the input
-  //         var temp = password.charAt(i);
-  //         if(temp == temp.toUpperCase()) {
-  //             isUpper = true;
-  //             break;
-  //         }
-  //     }
-
-  //     var isLower = false;
-  //     for (let i = 0; i < password.length; i++) { // Check if any lower case letters exist in the input
-  //         var temp = password.charAt(i);
-  //         if(temp == temp.toLowerCase()) {
-  //             isLower = true;
-  //             break;
-  //         }
-  //     }
-
-  //     if(password.length < 5 || password.length > 10) { // If the password is out of the 5-10 letter range
-  //         document.getElementById("passHelp").innerHTML = "Enter a password between 5-10 letters";
-  //     }
-
-  //     else if(isUpper == false) { // If the password does not have any upper case letters
-  //         document.getElementById("passHelp").innerHTML = "Include at least one upper case letter";
-  //     }
-
-  //     else if(isLower == false) { // If the password does not have any lower case letters
-  //         document.getElementById("passHelp").innerHTML = "Include at least one lower case letter";
-  //     }
-
-
-  // }
-
-
-  // addAccount() : boolean {
-  //     var isValidName = verifyUsername();
-  //     var isValidPassword = verifyPassword();
-
-  //     if(isValidName == true && isValidPassword == true) { // If the username and the password are typed in properly
-  //         window.location.href = "login.php";
-  //         return true;
-  //     }
-
-  //     else if(isValidName == true && isValidPassword == false) { // If the username is typed in properly
-  //         event.preventDefault(); // Stops the page from logging in
-  //         passErrType(); // Display the password error message
-  //         document.getElementById("userHelp").innerHTML = "";
-  //         return false;
-  //     }
-
-  //     else if(isValidName == false && isValidPassword == true) { // If the password is typed in properly
-  //         event.preventDefault(); // Stops the page from logging in
-  //         userErrType(); // Display the username error message
-  //         document.getElementById("passHelp").innerHTML = "";
-  //         return false;
-  //     }
-
-  //     else { // If both the username and the password isn't typed in properly
-  //         userErrType(); // Display the username error message
-  //         passErrType(); // Display the password error message
-  //         event.preventDefault(); // Stops the page from logging in
-  //         return false;
-  //     }
-      
-  // }
+  getInvitesAndUsernames(): void {
+    // Get request to get invites from backend listInvites.php
+    this.http.get("https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System-Sprint-5/listInvites.php").subscribe(
+      (respData) => {this.invites = respData;
+      this.usernames = new Array((<Array<any>>respData).length);
+      for(let j = 1;j <= (<Array<any>>respData).length; j++){
+        // Post request to get user_ids from backend listUsers.php
+        this.http.post("https://cs4640.cs.virginia.edu/ems5fa/CS4640-Sports-Invitation-System-Sprint-5/listUsers.php", {invite_id : j}).subscribe(
+          (respData2) => {
+            if (!(<Array<any>>respData2).length){
+              this.usernames[j-1] = [0];
+            }
+            else{
+              this.usernames[j-1]= respData2;
+            }
+          },
+          (error2) => {this.error = error2; }
+        );
+      }},
+      (error) => {this.error = error; }
+    );
+  }
+  // Used for view to component binding
+  getInfo (): void {
+    alert("If a user has accepted an invitation, their ids will be listed under these invitations.")
+  }
 }

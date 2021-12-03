@@ -1,62 +1,16 @@
-
-    <style>
-        .row {
-            width: 100%;
-        }
-
-        .col-25 {
-            float: left;
-            width: 25%;
-        }
-
-        .col-75 {
-            float: left;
-            width: 75%;
-        }
-
-        @media screen and (max-width: 600px) {
-            .col-25, .col-75, .col-2, input[type=submit] { 
-                width: 100%; /*If the width of the screen is 600 px or less, make text and the text box on separate rows of the website*/
-                margin-top: 0;
-            }
-        }
-    </style>
-
-        <div class="container" id="container-login">
-            <h1>Welcome to UVA Sports Invitations</h1>
-            <form #orderForm="ngForm" method="post" name="login">
-                <div class="row justify-content-center" style="margin-bottom: 5px; margin-top:200px;"> <!--Username field-->
-                    <div class="col-2"> 
-                        <label for="usr">New Username:</label>
-                    </div>
-                    <div class="col-2">
-                    <input ngModel type="text" class="login-input" name="username" placeholder="Username" autofocus="true" id="inputUsername"/>
-                        <div id=userHelp class="form-text" style="color:red"></div>
-                    </div>
-                </div>
-                <div class="row justify-content-center"> <!--Password field-->
-                    <div class="col-2">
-                        <label for="pwd">New Password:</label>
-                    </div>
-                    <div class="col-2">
-                    <input ngModel type="password" class="login-input" name="password" placeholder="Password" id="inputPassword"/>
-                        <div id=passHelp class="form-text" style="color:red"></div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col">
-                        <!-- <a href="index.php" class="btn btn-primary btn-sm">Login</a> Login button -->
-                        <input type="submit" value="Register" name="submit" class="login-button" id="login" (click)="addAccount();"/> <!-- changed click: One way binding-->
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col">
-                        <!-- <a href="#" class="text-decoration-none">Forgot Password?</a> "Forgot Password button" -->
-                    </div>
-                </div>
-            </form>
+<!-- Authors: Eric Sakmyster and Merron Tecleab -->
+<!-- One way Data Binding: View To Component -->
+<button class = "btn btn-primary" (click) = "getInfo()">What is this page for?</button>
+<div *ngFor="let invite of invites; let i=index" class="card text-center" id="{{invite.invite_id}}" [style.border]="border_style" [style.padding]="padding_style" [style.margin-top] ="margin_top_style">
+    <div class="card-body">
+        <!-- One way Data Binding: Component to view {{}} -->
+        <h5 class="card-title">{{invite.gender}} {{invite.sport}}</h5>
+        <p class="card-text">@{{invite.location}}</p>
+        <p class="card-text">{{invite.time}} {{invite.date}}</p>
+        <p class="card-text">{{invite.description}}</p>  
+        <div *ngFor="let username of usernames[i]">
+            <div *ngIf = "username == 0" class='alert alert-primary' role='alert'>No Accepted Invites</div>
+            <p *ngIf = "username" class="card-text">Accepted User ID: {{username.user_id}}</p>
         </div>
-
-<p> {{ orderForm.value.username }} </p>
-
-
+    </div>  
+</div>
